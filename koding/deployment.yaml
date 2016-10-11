@@ -1,0 +1,74 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: koding
+  namespace: default
+  labels:
+    name: koding
+    service: koding
+    app: koding
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: koding
+        service: koding
+        app: koding
+    spec:
+      containers:
+      - image: gcr.io/kodingdev-vms/koding/koding:20161007
+        name: koding
+        args:
+        - "build"
+        - "--version"
+        - "20160921"
+        - "--hostname"
+        - "dev.savas.io"
+        - "--host"
+        - "dev.savas.io"
+        - "--publicPort"
+        - "80"
+        env:
+        - name: KODINGENV
+          value: default
+        - name: KONFIG_MONGO
+          value: "$(MONGO_SERVICE_HOST):27017/koding"
+        - name: KONFIG_MQ_HOST
+          value: $(RABBITMQ_SERVICE_HOST)
+        - name: KONFIG_MQ_APIADDRESS
+          value: $(RABBITMQ_SERVICE_HOST)
+        - name: KONFIG_REDIS_HOST
+          value: $(REDIS_SERVICE_HOST)
+        - name: KONFIG_REDIS_PORT
+          value: "6379"
+        - name: KONFIG_MONITORINGREDIS_HOST
+          value: $(REDIS_SERVICE_HOST)
+        - name: KONFIG_MONITORINGREDIS_PORT
+          value: "6379"
+
+        - name: KONFIG_POSTGRES_HOST
+          value: $(POSTGRES_SERVICE_HOST)
+        - name: KONFIG_KONTROL_MONGOURL
+          value: "$(MONGO_SERVICE_HOST):27017/koding"
+        - name: KONFIG_KONTROL_POSTGRES_HOST
+          value: $(POSTGRES_SERVICE_HOST)
+        - name: KONFIG_KLOUD_MONGOURL
+          value: "$(MONGO_SERVICE_HOST):27017/koding"
+        - name: KONFIG_SOCIALAPI_MONGO
+          value: "$(MONGO_SERVICE_HOST):27017/koding"
+        - name: KONFIG_SOCIALAPI_MQ_HOST
+          value: $(RABBITMQ_SERVICE_HOST)
+        - name: KONFIG_SOCIALAPI_MQ_APIADDRESS
+          value: $(RABBITMQ_SERVICE_HOST)
+        - name: KONFIG_SOCIALAPI_POSTGRES_HOST
+          value: $(POSTGRES_SERVICE_HOST)
+        - name: KONFIG_SOCIALAPI_REDIS_URL
+          value: "$(REDIS_SERVICE_HOST):6379"
+        - name: KONFIG_VMWATCHER_MONGO
+          value: "$(MONGO_SERVICE_HOST):27017/koding"
+        - name: KONFIG_VMWATCHER_REDIS
+          value: "$(REDIS_SERVICE_HOST):6379"
+        ports:
+        - name: http
+          containerPort: 80

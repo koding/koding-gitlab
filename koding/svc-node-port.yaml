@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: koding-nodeport
+  namespace: default
+  labels:
+    name: koding
+    service: koding
+    app: koding
+spec:
+  type: NodePort
+  selector:
+    name: koding
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
