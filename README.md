@@ -109,6 +109,41 @@ Koding depends on RabbitMQ, Posgresql, Redis and Mongo as external services.
 ``` kubectl create -f ./mongodb ```
 
 
+## Configuring DNS Records
+
+### Configuring Koding service
+
+```
+kubectl get svc koding -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+xxx.xxx.xxx.xxx%
+```
+
+
+Add this ip with the same name of your config in koding/deployment.yaml's config
+```
+- "--hostname"
+- "dev.savas.io"
+- "--host"
+- "dev.savas.io"
+- "--publicPort"
+```
+
+
+### Configuring Gitlab service
+```
+kubectl get svc gitlab -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
+xxx.xxx.xxx.xxx%
+```
+
+Add this ip with the same name of your config in gitlab/gitlab-rc.yaml's config.
+```
+GITLAB_HOST
+```
+
+
+## Debugging services
+
+
 Debugging Mongo
 
 ```
@@ -155,37 +190,3 @@ slave0:ip=10.1.1.29,port=6379,state=online,offset=12054733,lag=0
 slave1:ip=10.1.2.34,port=6379,state=online,offset=12054600,lag=1
 
 ```
-
-
-## Configuring DNS Records
-
-### Configuring Koding service
-
-```
-kubectl get svc koding -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
-104.198.167.230%
-```
-
-
-Add this ip with the same name of your config in koding/deployment.yaml's
-```
-- "--hostname"
-- "dev.savas.io"
-- "--host"
-- "dev.savas.io"
-- "--publicPort"
-```
-config.
-
-
-### Configuring Gitlab service
-```
-kubectl get svc gitlab -o jsonpath="{.status.loadBalancer.ingress[0].ip}"
-104.198.165.6%
-```
-
-Add this ip with the same name of your config in gitlab/gitlab-rc.yaml's
-```
-GITLAB_HOST
-```
-config.
