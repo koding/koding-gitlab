@@ -12,7 +12,7 @@ spec:
         name: mongo
     spec:
       containers:
-      - image: koding/mongo:20160906
+      - image: koding/mongo:2016-10-11
         name: mongo
         ports:
         - name: mongo
