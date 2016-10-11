@@ -88,7 +88,7 @@ kubectl proxy
 Starting to serve on 127.0.0.1:8001
 ```
 
-## Creating Koding Services
+## Creating Koding's Services
 
 Koding depends on RabbitMQ, Posgresql, Redis and Mongo as external services.
 
@@ -104,10 +104,30 @@ Koding depends on RabbitMQ, Posgresql, Redis and Mongo as external services.
 
 ``` kubectl create -f ./postgres-standalone ```
 
-* Create postgresql service
+* Create mongo service
 
 ``` kubectl create -f ./mongodb ```
 
+
+## Creating Gitlab's Services
+
+Gitlab depends on Posgresql and Redis as external services.
+
+* We have already created a redis service for koding.
+* Create postgresql service
+
+``` kubectl create -f ./gitlab-postgres ```
+
+
+## Creating Applications
+
+After creating and making sure all the dependant services up and running, run
+followings to bootstrap both applications.
+
+Allow services to run before running
+
+``` kubectl create -f ./gitlab ```
+``` kubectl create -f ./koding ```
 
 ## Configuring DNS Records
 
@@ -189,4 +209,25 @@ connected_slaves:2
 slave0:ip=10.1.1.29,port=6379,state=online,offset=12054733,lag=0
 slave1:ip=10.1.2.34,port=6379,state=online,offset=12054600,lag=1
 
+```
+
+
+## To sum up all the commands we have run above ☝
+
+```
+# create resources
+terraform apply
+# get the credentials
+export GOOGLE_APPLICATION_CREDENTIALS=$PWD/account.json
+gcloud container clusters get-credentials koding-gitlab --zone us-central1
+# koding's services
+kubectl create -f ./redis-standalone
+kubectl create -f ./rabbitmq
+kubectl create -f ./postgres-standalone
+kubectl create -f ./mongodb
+#gitlab's services
+kubectl create -f ./gitlab-postgres
+#create the applications
+kubectl create -f ./gitlab
+kubectl create -f ./koding
 ```
