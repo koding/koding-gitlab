@@ -65,15 +65,13 @@ koding-gitlab-kubernetes-allow-ssh              koding-gitlab  0.0.0.0/0        
 To simplify provisioning mentioned resources, we will use Terraform.
 You should have it in your PATH.
 
-```
-terraform apply
-```
+``` terraform apply ```
 
 ### Configure your env
 Set your google account files adress to ENV var
-```
-GOOGLE_APPLICATION_CREDENTIALS=`pwd`/account.json
-```
+
+``` GOOGLE_APPLICATION_CREDENTIALS=$pwd/account.json ```
+
 ### Getting credentials for your cluster
 
 ```
@@ -84,36 +82,31 @@ gcloud container clusters get-credentials <cluster name> \
 ### Reaching To Kubernetes UI
 
 Just proxy your localhost to kubernetes service after getting your credentials
-```kubectl proxy
+
+```
+kubectl proxy
 Starting to serve on 127.0.0.1:8001
 ```
+
 ## Creating Koding Services
 
 Koding depends on RabbitMQ, Posgresql, Redis and Mongo as external services.
 
 * Create redis service
 
-```
-kubectl create -f ./redis-standalone
-```
+``` kubectl create -f ./redis-standalone ```
 
 * Create rabbitmq service
 
-```
-kubectl create -f ./rabbitmq
-```
+``` kubectl create -f ./rabbitmq ```
 
 * Create postgresql service
 
-```
-kubectl create -f ./postgres-standalone
-```
+``` kubectl create -f ./postgres-standalone ```
 
 * Create postgresql service
 
-```
-kubectl create -f ./mongodb
-```
+``` kubectl create -f ./mongodb ```
 
 
 Debugging Mongo
