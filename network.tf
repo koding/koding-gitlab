@@ -1,19 +1,19 @@
 resource "google_compute_network" "kubernetes" {
-  name                    = "koding"
+  name                    = "${var.cluster_name}"
   description             = "Network for Koding And Gitlab on Kubernetes"
   auto_create_subnetworks = false
 }
 
 
 resource "google_compute_subnetwork" "kubernetes" {
-  name          = "kubernetes"
+  name          = "${var.cluster_name}-kubernetes"
   ip_cidr_range = "${var.network_cidr}"
   network       = "${google_compute_network.kubernetes.self_link}"
   region        = "${var.gcp_region}"
 }
 
 resource "google_compute_firewall" "kubernetes-allow-icmp" {
-  name    = "kubernetes-allow-icmp"
+  name    = "${var.cluster_name}-kubernetes-allow-icmp"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow icmp requests from internet"
 
@@ -26,7 +26,7 @@ resource "google_compute_firewall" "kubernetes-allow-icmp" {
 
 
 resource "google_compute_firewall" "kubernetes-allow-internal" {
-  name    = "kubernetes-allow-internal"
+  name    = "${var.cluster_name}-kubernetes-allow-internal"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
@@ -49,7 +49,7 @@ resource "google_compute_firewall" "kubernetes-allow-internal" {
 
 // kubernetes-allow-rdp
 resource "google_compute_firewall" "kubernetes-allow-rdp" {
-  name    = "kubernetes-allow-rdp"
+  name    = "${var.cluster_name}-kubernetes-allow-rdp"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
@@ -63,7 +63,7 @@ resource "google_compute_firewall" "kubernetes-allow-rdp" {
 
 // kubernetes-allow-ssh
 resource "google_compute_firewall" "kubernetes-allow-ssh" {
-  name    = "kubernetes-allow-ssh"
+  name    = "${var.cluster_name}-kubernetes-allow-ssh"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
@@ -77,7 +77,7 @@ resource "google_compute_firewall" "kubernetes-allow-ssh" {
 
 // kubernetes-allow-healthz
 resource "google_compute_firewall" "kubernetes-allow-healthz" {
-  name    = "kubernetes-allow-healthz"
+  name    = "${var.cluster_name}-kubernetes-allow-healthz"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
@@ -92,7 +92,7 @@ resource "google_compute_firewall" "kubernetes-allow-healthz" {
 
 // kubernetes-allow-api-server
 resource "google_compute_firewall" "kubernetes-allow-api-server" {
-  name    = "kubernetes-allow-api-server"
+  name    = "${var.cluster_name}-kubernetes-allow-api-server"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
@@ -106,7 +106,7 @@ resource "google_compute_firewall" "kubernetes-allow-api-server" {
 
 // kubernetes-koding-endpoint
 resource "google_compute_firewall" "kubernetes-allow-api-koding-endpoint" {
-  name    = "kubernetes-allow-koding-endpoint"
+  name    = "${var.cluster_name}-kubernetes-allow-koding-endpoint"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
@@ -118,14 +118,9 @@ resource "google_compute_firewall" "kubernetes-allow-api-koding-endpoint" {
   source_ranges = [ "0.0.0.0/0" ]
 }
 
-resource "google_compute_address" "kubernetes" {
-  name   = "kubernetes"
-  region = "${var.gcp_region}"
-}
-
 // kubernetes-allow-from-current
 resource "google_compute_firewall" "kubernetes-allow-from-current" {
-  name    = "kubernetes-allow-from-current"
+  name    = "${var.cluster_name}-kubernetes-allow-from-current"
   network = "${google_compute_network.kubernetes.name}"
   description = "Allow all communication within cluster"
 
