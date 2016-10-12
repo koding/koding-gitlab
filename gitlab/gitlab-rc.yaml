@@ -17,12 +17,11 @@ spec:
         image: sameersbn/gitlab:8.11.5
         env:
         - name: DEBUG
-          value: {{ default "false" .Values.DEBUG }}
+          value: "false"
         - name: TZ
-          value: {{ default "Asia/Kolkata" .Values.TZ }}
+          value: Asia/Kolkata
         - name: GITLAB_TIMEZONE
-          value: {{ default "false" .Values.GITLAB_TIMEZONE }}
-
+          value: Kolkata
 
         - name: GITLAB_SECRETS_DB_KEY_BASE
           value: long-and-random-alpha-numeric-string
