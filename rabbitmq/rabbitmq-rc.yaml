@@ -28,18 +28,14 @@ spec:
 
         ports:
           - containerPort: 15672
-            targetPort: 15672
             protocol : TCP
             name : admin-port
           - containerPort: 5672
-            targetPort: 5672
             protocol : TCP
             name : default
           - containerPort: 4369
-            targetPort: 4369
             protocol : TCP
             name : epmd-port
           - containerPort: 25672
-            targetPort: 25672
             protocol : TCP
             name : dist-port
