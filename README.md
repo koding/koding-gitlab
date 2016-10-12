@@ -32,12 +32,12 @@ Create a subnet for the Kubernetes cluster
 
 ### Firewall Rules
 
-allow-icmp source-ranges 0.0.0.0/0
-allow-internal source-ranges 10.240.0.0/24
-allow-rdp source-ranges 0.0.0.0/0
-allow-ssh source-ranges 0.0.0.0/0
-allow-healthz source-ranges 130.211.0.0/22
-allow-api-server source-ranges 0.0.0.0/0
+* allow-icmp source-ranges 0.0.0.0/0
+* allow-internal source-ranges 10.240.0.0/24
+* allow-rdp source-ranges 0.0.0.0/0
+* allow-ssh source-ranges 0.0.0.0/0
+* allow-healthz source-ranges 130.211.0.0/22
+* allow-api-server source-ranges 0.0.0.0/0
 
 
 ```
@@ -67,10 +67,13 @@ You should have it in your PATH.
 
 ``` terraform apply ```
 
+ps: if you change the disk name manually, do not forget to update
+mongodb/controller.yaml
+
 ### Configure your env
 Set your google account files adress to ENV var
 
-``` GOOGLE_APPLICATION_CREDENTIALS=$pwd/account.json ```
+``` GOOGLE_APPLICATION_CREDENTIALS=$PWD/account.json ```
 
 ### Getting credentials for your cluster
 
@@ -219,7 +222,7 @@ slave1:ip=10.1.2.34,port=6379,state=online,offset=12054600,lag=1
 terraform apply
 # get the credentials
 export GOOGLE_APPLICATION_CREDENTIALS=$PWD/account.json
-gcloud container clusters get-credentials koding-gitlab --zone us-central1
+gcloud container clusters get-credentials koding-gitlab --zone us-central1-a
 # koding's services
 kubectl create -f ./redis-standalone
 kubectl create -f ./rabbitmq
